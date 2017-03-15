@@ -1,0 +1,117 @@
+README file
+-------------------------
+   This program is an implementation of the association rule mining algorithm Apriori in JAVA.
+   
+- Overview the program code:
+
+   There are totally 4 small Java source code files:
+
+           Association_rule_mining.java            all the functions related to Association Rule mining is in this file
+           main.java                               this file has user interface and it calls the functions in the first file
+
+ 
+- The following is the  program structure:
+
+   main.java:
+
+    getMinimumConfidence()
+    getMinimumSupport()
+    getInputFile()
+    main() ---->getInputFile
+           ---->getMinimumSupport
+           ---->getMinimumConfidence
+           ---->Association_rule_mining.loadDataSet(filename)
+           ---->Association_rule_mining.generateCandidate1ItemSet
+           ---->Association_rule_mining.generateFrequent1ItemSet(candidate1ItemSet, minsup)
+           ---->Association_rule_mining.generateCandidateKItemSets(OneFrequentItemSet,minsup)
+           ---->printDictionary(FrequentItems)
+           ---->ruleGeneration(FrequentItems, minsup, minconf)
+
+
+
+   Association_rule_mining.java:
+
+   GetItemsinoneLine(String line)                                by using regular expression extract items in a single line.
+   getfilepath(dbFileName)                                       get the current file path and make a full path for the file.
+   loadDataSet(String dbFileName)                                load dataset file into memory. after reading file, all the data store in a Set<Set<item>> structure.
+   ---->getfilepath(dbFileName)
+   ---->GetItemsinoneLine(lines.get(0));
+
+   generateCandidate1ItemSet()                                   this function makes a dictionary and put all the 1-itemset candidates in it.
+   generateFrequent1ItemSet(candidate1ItemSet, minimumSupport)   this function geterates frequent 1-itemsets based on minimum support value.
+   generateCandidateKItemSets(FrequentOneItemSet,minimumSupport) this function generates Kitemsets based on minimum support value for Frequent 1-itemsets
+   ---->selfJoining(Lk);                                         perform selfjoining on LK
+   ---->generateFrequentKItemSet(Cm, minimumSupport)             This function generates frequent KItemset
+   selfJoining(Lk);
+   countoverDB(Set<String> A)                                    This function conts the number of items happened in dataset
+   generateFrequentKItemSet(Cm, minimumSupport);
+   ---->countoverDB(A);
+
+   printDictionary(FrequentItems);                               This function prints frequent itemsets
+
+   ruleGeneration(FrequentItems, minimumSupport, minimumConfidence);
+   ----> ruleGenerationWithPruning(lk, minimumSupport, minimumConfidence);
+   ----> printRules(generatedRules, minimumSupport, minimumConfidence);
+
+   ruleGenerationWithPruning(lk, minimumSupport, minimumConfidence)   This function builds rules by looping over frequent itemsets and applying pruning on each item
+   ---->allSubsetsWithNMember(l, i);
+   ---->CheckConfidenceOfItemset(set, l, minimumSupport, minimumConfidence)
+   allSubsetsWithNMember(Set<String> frequentItem, Integer n)         generates all subsets of frequentItem that has n members
+   CheckConfidenceOfItemset(set, l, minimumSupport, minimumConfidence)    this function calculate confidence and check the measuring parameters.
+
+
+
+
+Run the program:
+   bluenose:
+   javac main.java
+   java main
+
+The result is stored in the file Rules, to view the result:                         
+   bluenose:
+   more Rules
+                    
+Description about bonus part   
+  In order to develop this part, there are some facts to be considered.
+  1- confidence does not have anti-monotone property. So, confidence(ABC->D) can be larger or smaller than Confidence(BC->D).
+  2- Confidence of rules generated from the same itemset has anti-monotone property.
+  For example, for itemset L={A,B,C,D} we have confidence(ABC->D)>=confidence(AB->CD)>=confidence(A->BCD)
+  I used this features to pruning when I generate the Rules for an itemset.
+  ruleGenerationWithPruning function has three inputs: lk is an itemset and minimumSupport, minimumConfidence are the measures.
+  I use allSubsetsWithNMember to generate all subsets of l with I members. using this function in a loop from m which is size(l)-1 to 1,
+  helps us to check the tree layer by layer from the root.
+  then we check the confidence for each layer. in this step, we prune the nodes with low confidence and save them to an array
+  to prune the related subsets in the next layers. when a subset satisfies the measuring indicators, we add it to the list of good rules.
+  it guarantees that we will not generate repetitive rules while we generate subsets layers by layer and pruning in this way.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

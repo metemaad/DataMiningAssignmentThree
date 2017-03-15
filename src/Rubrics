@@ -1,0 +1,14 @@
+README Documentation
+– Introduction to the code structure / architecture
+– Other instructions / comments to the user
+– Brief Description about bonus part (if attempt)
+– Specify limitations of the program( if any)
+• Program Execution
+– User Interface
+– Frequent Itemset generation & performance
+– Rule generation & performance
+• Code Design
+– Modularity / Functionality
+– Code readability and comments
+• Bonus
+– Search pruning for rule generation and explanation
